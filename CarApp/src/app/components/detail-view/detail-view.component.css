@@ -1,0 +1,30 @@
+.car{
+    display: flex;
+    justify-content: center;
+}
+
+.image{
+   flex: 1;
+}
+
+h1{
+    margin-top: 70px;
+    text-align: center;
+}
+
+.data{
+    flex: 1;
+}
+
+.footer{
+    display: flex;
+}
+
+.filler{
+    flex: 1 1 auto;
+}
+
+.cell{
+    width: 60px;
+    justify-content: center;
+}

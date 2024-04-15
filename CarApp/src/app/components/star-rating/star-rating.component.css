@@ -1,0 +1,15 @@
+/* star-rating.component.css */
+
+.star-rating {
+  display: flex;
+}
+
+.star {
+  font-size: 28px;
+  color: grey; /* Default color for empty stars */
+}
+
+.filled-decimal, .filled {
+  color: gold; /* Color for filled stars */
+  outline: black;
+}

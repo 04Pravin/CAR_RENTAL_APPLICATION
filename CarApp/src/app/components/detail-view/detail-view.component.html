@@ -1,0 +1,73 @@
+<div *ngIf="car">
+    <h1>{{car.name}}</h1>
+</div>
+
+<div class="footer">
+    <button *ngIf="id!=firstCarId" mat-raised-button (click)="navigate('prev')">
+        <mat-icon>arrow_backward</mat-icon>
+        <span>previous</span>
+    </button>
+    
+    <span class="filler"></span>
+
+    <button *ngIf ="id!=lastCarId" mat-raised-button (click)="navigate('next')">
+        <span>next</span>
+        <mat-icon>arrow_forward</mat-icon>
+    </button>
+</div>
+
+<div *ngIf="car" class="car">
+    <div class="image">
+        <img [src]="car.imageData" alt="Car Image" width="600" height="400">
+    </div>
+
+    <div class="data">
+        <table>
+            <td>
+                <tr><p>Category</p></tr>
+                <tr><p>Seats</p></tr>
+                <tr><p>Gear system</p></tr>
+                <tr><p>Fuel</p></tr>
+                <tr><p>Mileage</p></tr>
+                
+                <tr><p>Rent</p></tr>
+                <tr><p>Ratings</p></tr>
+            </td>
+        
+            <td class="cell">
+                <tr><p>:</p></tr>
+                <tr><p>:</p></tr>
+                <tr><p>:</p></tr>
+                <tr><p>:</p></tr>
+                <tr><p>:</p></tr>
+                <tr><p>:</p></tr>
+                <tr><p>:</p></tr>
+            </td>
+            
+            <td>
+                <tr><p>{{car.category}}</p></tr>
+                <tr><p>{{car.seats}}</p></tr>
+                <tr><p>{{car.gearSystem}}</p></tr>
+                <tr><p>{{car.fuel}}</p></tr>
+                <tr><p>{{car.milage}}</p></tr>
+                
+                <tr><p>{{car.rent}}</p></tr>
+                <tr><p>
+                    <app-star-rating [rating]="car.ratings"></app-star-rating>
+                </p></tr>
+            </td>
+        </table>
+    </div>
+</div>
+
+<div class="footer">
+    <button mat-flat-button color="warn" (click)="delete()">
+        <mat-icon>delete</mat-icon>Delete
+    </button>
+    
+    <span class="filler"></span>
+
+    <button mat-flat-button color="primary" (click)="edit()">
+        <mat-icon>edit</mat-icon>Edit
+    </button>
+</div>

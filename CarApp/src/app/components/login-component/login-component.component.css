@@ -1,0 +1,26 @@
+mat-card{
+    background-color: rgba(130,130,130,.3);
+    width: 400px;
+    height: 300px;
+    margin: auto;
+}
+
+.card{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Set the height to 100% of the viewport height */
+  margin: 0;
+}
+
+h1{
+    margin: auto;
+}
+
+.login{
+    margin: auto;
+}
+.field{
+    display: table;
+    margin: auto;
+}

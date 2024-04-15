@@ -1,0 +1,47 @@
+<div class="sort">
+    <button mat-button [matMenuTriggerFor]="menu">Sort <mat-icon>sort</mat-icon></button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="sortItems('name')">by name</button>
+            <button mat-menu-item (click)="sortItems('ratings')">by rating</button>
+            <button mat-menu-item (click)="sortItems('rent')">by rent</button>
+        </mat-menu>
+</div><br>
+
+<div class="card">
+    <mat-card *ngFor="let car of sortedCars" (click)="detail(car)">
+        <div class="image">
+            <img mat-card-image [src]="car.imageData" alt="Car Image" width="200" height="120">
+        </div>
+        <mat-card-header class="title">
+            
+            <mat-card-title>{{car.name}}</mat-card-title>
+            <mat-card-subtitle>
+                <p>
+                    Rent: {{car.rent | currency: 'Rs. '}}<br>
+                </p>
+
+                <p *ngIf="car.fuel==='Diesel'">
+                    Mileage per liter: {{car.milage}} kmpl<br>
+                </p>
+
+                <p *ngIf="car.fuel==='Battery'">
+                    Miles per hour: {{car.milage}} kmph<br>
+                </p>
+
+                <p *ngIf="car.fuel==='Gas'">
+                    Miles per gas: {{car.milage}} mpg<br>
+                </p>
+
+                <!-- <p>
+                    Ratings: {{car.ratings}} of 5
+                </p> -->
+                <!-- Ratings: <br> -->
+            
+                <app-star-rating [rating]="car.ratings"></app-star-rating>
+                
+                
+            </mat-card-subtitle>
+        </mat-card-header>
+          
+    </mat-card>
+</div>

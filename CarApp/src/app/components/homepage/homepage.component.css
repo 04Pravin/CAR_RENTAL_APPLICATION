@@ -1,0 +1,37 @@
+mat-card{
+    height: 350px;
+    width: 250px;
+    border: 4px solid darkgray; 
+    border-radius: 10px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title{
+    background-color: darkgray;
+}
+
+.card{
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    grid-gap: 15px;
+    justify-content: center;
+}
+
+.sort{
+    margin-top: 70px;
+    text-align: right;
+}
+
+mat-card:hover{
+    color: rgb(72, 44, 233);
+    transform: scale(1.05);
+    border: 2px solid rgb(72, 44, 233); 
+}
+
+.image{
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+}
+
