@@ -93,7 +93,7 @@ public class AuthService {
 		otpData.put(email, otp);
 //		return otp;
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom("pravinkumareee1404@gmail.com");
+		message.setFrom("yourmail@gmail.com");
 		message.setTo(email);
 		message.setSubject("CAR RENTAL - OTP");
 		message.setText("Your OTP code : "+ otp);

@@ -59,7 +59,7 @@ public class AuthController {
 	@PostMapping("sendOtp")
 	public ResponseEntity<Void> generateOtp() {
 		logger.info("In controller - sending otp");
-		authService.generateOtp("pravinkumareee1404@gmail.com");
+		authService.generateOtp("yourmail@gmail.com");
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
