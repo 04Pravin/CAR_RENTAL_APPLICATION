@@ -1,0 +1,17 @@
+{
+    "/car-api": {
+      "target": "http://localhost:8081",
+      "secure": false,
+      "changeOrigin": true,
+      "ws": false,
+      "logLevel": "debug"
+    },
+    "/auth-api": {
+      "target": "http://localhost:8081",
+      "secure": false,
+      "changeOrigin": true,
+      "ws": false,
+      "logLevel": "debug"
+    }
+  }
+  

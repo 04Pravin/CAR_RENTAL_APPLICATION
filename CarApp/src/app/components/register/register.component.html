@@ -1,0 +1,62 @@
+<div class="register-form-container">
+    <h1 mat-dialog-title>
+        New User Registration
+        <mat-icon matSuffix>person_add</mat-icon>
+    </h1>
+    
+
+    <mat-dialog-content>
+        <form [formGroup]="registrationForm">
+            <div class="field-container">
+                <mat-form-field appearance="outline">
+                    <mat-label>Enter username</mat-label>
+                    <input formControlName="username" matInput type="text" required>
+                    <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
+        
+                <mat-form-field appearance="outline">
+                    <mat-label>Enter your mobile number</mat-label>
+                    <input formControlName="mobileNumber" matInput type="text" required>
+                    <mat-icon matSuffix>phone</mat-icon>
+                </mat-form-field>
+        
+                <mat-form-field appearance="outline">
+                    <mat-label>Enter your email</mat-label>
+                    <input formControlName="email" matInput type="text" required>
+                    <mat-icon matSuffix>email</mat-icon>
+                </mat-form-field>
+        
+                <mat-form-field appearance="outline">
+                    <mat-label>Enter password</mat-label>
+                    <input formControlName="password" matInput type="text" required>
+                    <mat-icon matSuffix>lock</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Re-type password</mat-label>
+                    <input formControlName="confirmPassword" matInput type="text" required>
+                    <mat-icon matSuffix>lock</mat-icon>
+                </mat-form-field>
+
+                <div *ngIf="registrationForm.hasError('passwordMismatch') && registrationForm.get('confirmPassword')?.touched" class="error">
+                    Passwords do not match.
+                </div>
+
+                <mat-form-field appearance="outline">
+                    
+                        <mat-label>Select Role</mat-label>
+                        <mat-select disableRipple required>
+                            <mat-option value="role">USER</mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>work</mat-icon>
+                </mat-form-field>
+            </div>
+            
+        </form>
+
+        <mat-dialog-actions align="end">
+            <button mat-raised-button (click)="cancel()" color="warn">Cancel</button>
+            <button mat-raised-button (click)="register(registrationForm)" color="primary" [disabled]="registrationForm.invalid">Register</button>
+        </mat-dialog-actions>
+    </mat-dialog-content>
+</div>

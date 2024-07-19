@@ -13,8 +13,12 @@ import { MatSelectModule } from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
-import {  StarRatingModule } from 'angular-star-rating';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableModule} from '@angular/material/table';
+import { MatGridListModule } from '@angular/material/grid-list';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [],
@@ -33,7 +37,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatMenuModule,
     MatCheckboxModule,
     MatDialogModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTableModule,
+    MatGridListModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule
 
   ],
   exports:[
@@ -50,7 +58,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatMenuModule,
     MatCheckboxModule,
     MatDialogModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTableModule,
+    MatGridListModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule
 
   ]
 })

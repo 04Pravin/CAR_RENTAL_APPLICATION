@@ -1,29 +1,120 @@
-<div class="card">
-    <mat-card>
-        <h1>Welcome</h1>
+<div class="login-container">
+    <mat-card class="login-card">
+        <div class="login-content">
+            <div class="login-image-container">
+                <img src="assets/img/login.jpg" alt="Login Image" class="login-image">
+            </div>
+    
+            <div class="login-form-container">
+                <h1 *ngIf="!forgotPassword">Welcome</h1>
+                
+                <h1 *ngIf="forgotPassword && !confirmReset">Reset Password</h1>
 
-        <form>
-            <div class="field">
-                <mat-form-field appearance="outline">
-                    <mat-label>Enter username/email</mat-label>
-                    <input matInput type="email" matInput>
-                    <mat-icon matSuffix>person</mat-icon>
-                </mat-form-field>
-                <br><br>
-                <mat-form-field appearance="outline">
-                    <mat-label>Enter your password</mat-label>
-                    <input matInput [type]="hide ? 'password' : 'text'">
-                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
-                </mat-form-field>                                                           
-            </div>
-        </form>
-        <mat-card-actions>
-            <div class="login">
-                <button mat-raised-button  (click)="login()">Login</button>
-            </div>
-        </mat-card-actions>
+                <h1 *ngIf="confirmReset && forgotPassword">Hi {{user?.username}}</h1>
+
+                <form *ngIf="!forgotPassword" [formGroup]="loginForm" (ngSubmit)="login()">
+                    
+                    <div class="field">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter your username</mat-label>
+                            <input formControlName="username" matInput type="text" matInput required>
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter your password</mat-label>
+                            <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" required (keydown.enter)="onEnter($event)">
+                            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                        </mat-form-field>                                                           
+                    </div>
+                    <div>
+                        <a (click)="toggleForgotPassword()">Forgot password?</a>
+                    </div>
+
+                    <mat-card-actions class="login-card-actions">
+                        <div class="login-button">
+                            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+                        </div>
+                        <div>
+                            <button mat-raised-button (click)="signUp()">
+                                New User
+                                <mat-icon>person_add</mat-icon>
+                            </button>
+                        </div>
+                    </mat-card-actions>
+                </form>
+                
+                <form *ngIf="forgotPassword && !confirmReset" [formGroup]="resetPasswordForm" (ngSubmit)="next()">
+                
+                    <div class="field">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter your registered username</mat-label>
+                            <input formControlName="username" matInput type="text" matInput required>
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter your registered mail</mat-label>
+                            <input matInput formControlName="email" type="text" required>
+                            <mat-icon matSuffix>mail</mat-icon>
+                        </mat-form-field>                                                           
+                    </div>
+                    <mat-card-actions class="reset-card-actions">
+                        <div class="reset-button">
+                            <button mat-raised-button color="warn" (click)="back()">
+                                cancel
+                                <mat-icon>cancel</mat-icon>
+
+                            </button>
+                        </div>
+                        <div>
+                            <button mat-raised-button type="submit" [disabled]="resetPasswordForm.invalid" color="primary">
+                                Next
+                                <mat-icon matSuffix style="margin-right: 4px;">arrow_forward_ios</mat-icon>
+                            </button>
+                           
+                        </div>
+                    </mat-card-actions>
+                </form>
+
+                <form *ngIf="confirmReset && forgotPassword" [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
+                    <div class="field">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter password</mat-label>
+                            <input formControlName="password" [type]="!showPassword ? 'password' : 'text'" matInput type="text" required>
+                            <mat-icon matSuffix>lock</mat-icon>
+                        </mat-form-field>
         
+                        <mat-form-field appearance="outline">
+                            <mat-label>Re-type password</mat-label>
+                            <input formControlName="confirmPassword" [type]="!showPassword ? 'password' : 'text'" matInput type="text" required>
+                            <mat-icon matSuffix>lock</mat-icon>
+                        </mat-form-field>
+                        <mat-checkbox formControlName="showPassword">show password</mat-checkbox>
+                    </div>
+                    <mat-card-actions class="reset-card-actions">
+                        <div class="reset-button">
+                            <button mat-raised-button color="warn" (click)="back()">
+                                cancel
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+
+                            <button mat-raised-button color="primary" [disabled]="updatePasswordForm.invalid" type="submit">
+                                submit
+
+                            </button>
+                        </div>
+                    </mat-card-actions>
+                </form>
+                
+            </div>
+        </div>  
+
+        <div class="spinner-container" *ngIf="isLogin">
+            <mat-spinner></mat-spinner>
+        </div>    
+
     </mat-card>
 </div>

@@ -54,7 +54,10 @@ export class CarServiceService {
   }
 
   getWithImages():Observable<Car[]>{
-    return this._httpClient.get<Car[]>(this.baseUrl+'all');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    return this._httpClient.get<Car[]>(this.baseUrl+'all',{headers});
   }
 
   getById(id:number){

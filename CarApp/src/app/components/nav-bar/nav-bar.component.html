@@ -7,11 +7,24 @@
     </button>
     <mat-icon>car</mat-icon>
     <span>Car Rental Application</span>
-    <button mat-icon-button (click)="add()" matToolTip="Add">
+
+    <button *ngIf="isAdmin" mat-icon-button (click)="add()" matToolTip="Add">
         <mat-icon>add</mat-icon>
     </button>
+
     <span class="filler"></span>
     <div class="profile">
-        <mat-icon>account_circle</mat-icon>
+        <span>{{username}}</span>
+        <mat-icon [matMenuTriggerFor]="menu">account_circle</mat-icon>
     </div>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+            <mat-icon>person</mat-icon>
+            <span>User Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+        </button>
+    </mat-menu>    
 </mat-toolbar>

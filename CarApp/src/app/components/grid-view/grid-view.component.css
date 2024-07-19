@@ -18,15 +18,6 @@ mat-card{
     justify-content: center;
 }
 
-.header{
-    margin-top: 70px;
-}
-
-.sort{
-    /* margin-top: 70px; */
-    text-align: right;
-}
-
 mat-card:hover{
     color: rgb(72, 44, 233);
     transform: scale(1.05);
@@ -39,7 +30,3 @@ mat-card:hover{
     align-items: center;
 }
 
-button:hover{
-    color: red;
-    transform: scale(1.05);
-}
