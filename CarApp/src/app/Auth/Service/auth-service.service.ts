@@ -1,8 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from 'src/app/Model/user';
 
 @Injectable({
@@ -63,9 +63,20 @@ export class AuthServiceService {
     return this._httpClient.put<any>('http://localhost:8081/auth-api/update/userId/'+userId, updateUser);
   }
 
+  public sendOtp(email:string): Observable<any>{
+    return this._httpClient.post<any>('http://localhost:8081/auth-api/sendOtp',email);
+  }
+
+  public verifyOtp(email:any, otp:any): Observable<boolean>{
+    let params = new HttpParams().set('otp', otp).set('email', email);
+    return this._httpClient.post<boolean>('http://localhost:8081/auth-api/verifyOtp', null, {params});
+  }
+
   cleanUserObject(user: any): any {
     const { authorities, ...cleanedUser } = user;
     return cleanedUser;
   }
+
+  
 
 }

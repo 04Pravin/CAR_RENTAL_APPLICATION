@@ -17,12 +17,15 @@ export class HomepageComponent implements OnInit{
   currentPage = 0;
   totalItems = 0;
   showTable!: boolean;
+  getData!:boolean;
 
   constructor(private _carService:CarServiceService, private _router:Router){}
 
   
   ngOnInit(): void {
+    this.getData = true;
     this.getAllCars();
+    
   }
   
   getAllCars(){
@@ -35,6 +38,9 @@ export class HomepageComponent implements OnInit{
             car.imageData = this.getSanitizedImageData(car);
           });
         console.log(this.cars);
+      },
+      complete: () =>{
+        this.getData = false;
       }
     });
   }

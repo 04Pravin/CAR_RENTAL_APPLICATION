@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.carApp.model.AuthenticationResponse;
@@ -57,9 +58,16 @@ public class AuthController {
 	}
 	
 	@PostMapping("sendOtp")
-	public ResponseEntity<Void> generateOtp() {
+	public ResponseEntity<Void> generateOtp(@RequestBody String email) {
 		logger.info("In controller - sending otp");
-		authService.generateOtp("yourmail@gmail.com");
+		authService.generateOtp(email);
 		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
+	@PostMapping("verifyOtp")
+	public ResponseEntity<Boolean>verifyOtp(@RequestParam String email, @RequestParam String otp){
+		logger.info("In controller - verifying otp");
+		
+		return ResponseEntity.ok(authService.verifyOtp(email, otp));
 	}
 }

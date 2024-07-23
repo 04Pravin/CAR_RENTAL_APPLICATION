@@ -19,11 +19,18 @@ export class RegisterComponent {
     password: new FormControl(),
     role: new FormControl('USER', Validators.required),
     confirmPassword: new FormControl('', Validators.required)
-
   }, { validators: this.passwordMatchValidator() });
 
+  otpForm = new FormGroup({
+    otp: new FormControl('', Validators.required)
+  })
   message!: string;
   role: string = 'USER';
+  email!:string;
+  isOtpSent!:boolean;
+  isOtpVerified!:boolean;
+  gettingOtpProgress!:boolean;
+  veriyingOtpProgress!:boolean;
 
   constructor(
     private _router:Router, 
@@ -47,6 +54,35 @@ export class RegisterComponent {
         this._router.navigate(['/login']);
       }
     });
+  }
+
+  getOtp(){
+    this.gettingOtpProgress = true;
+    this.email = this.registrationForm.get('email')?.value;
+    this._authService.sendOtp(this.email).subscribe({
+      next: () => {console.log('Sending otp')},
+      error: () => {console.log('Otp not sent')},
+      complete: () => {
+        this.isOtpSent = true;
+        this.gettingOtpProgress = false;
+        console.log('Otp sent successfully')
+      }
+    });
+  }
+
+  verifyOtp(){
+    this.veriyingOtpProgress = true;
+    const otp = this.otpForm.get('otp')?.value;
+    this._authService.verifyOtp(otp, this.email).subscribe({
+      next: () => {console.log('Verifying otp')},
+      error: () => {console.log('Error while verifying')},
+      complete: () => {
+        this.isOtpVerified = true;
+        this.veriyingOtpProgress = false;
+        console.log('Verified successfully')
+      }
+    });
+    
   }
 
   cancel(){

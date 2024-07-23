@@ -1,4 +1,6 @@
 <div class="header">
+    <!-- <mat-progress-bar *ngIf="getData" mode="indeterminate"></mat-progress-bar> -->
+
     <button mat-button [matMenuTriggerFor]="menu" class="sort">Sort <mat-icon>sort</mat-icon></button>
 
         <mat-menu #menu="matMenu">
@@ -16,6 +18,9 @@
     </button>
 
 </div>
+<div class="spinner-container" *ngIf="getData">
+    <mat-spinner></mat-spinner>
+</div>  
 
 <app-table-view *ngIf="showTable" [cars]="cars" [currentPage]="currentPage" [pageSize]="pageSize"></app-table-view>
 <app-grid-view *ngIf="!showTable" [cars]="cars" [currentPage]="currentPage" [pageSize]="pageSize"></app-grid-view>

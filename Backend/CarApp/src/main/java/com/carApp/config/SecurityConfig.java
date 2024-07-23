@@ -38,7 +38,7 @@ public class SecurityConfig {
 				.cors().and()
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(
-						req -> req.antMatchers("/auth-api/register/**","/auth-api/login","/auth-api/resetPassword/**","/auth-api/update/**", "/auth-api/sendOtp/**")
+						req -> req.antMatchers("/auth-api/register/**","/auth-api/login","/auth-api/resetPassword/**","/auth-api/update/**", "/auth-api/sendOtp/**",  "/auth-api/verifyOtp/**")
 						.permitAll()
 						.antMatchers("/car-api/cars/all").hasAnyRole("USER","ADMIN")
 						.antMatchers("/car-api/cars").hasRole("ADMIN")

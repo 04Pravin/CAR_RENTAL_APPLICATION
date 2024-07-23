@@ -3,6 +3,7 @@ package com.carApp.model;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +20,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
+@Table(name = "user", uniqueConstraints = {
+	    @UniqueConstraint(columnNames = "email"),
+	    @UniqueConstraint(columnNames = "username"),
+	    @UniqueConstraint(columnNames = "mobileNumber")
+	})
 public class User implements UserDetails{
 
 	private static final long serialVersionUID = 1L;
@@ -26,9 +34,14 @@ public class User implements UserDetails{
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_seq")
 	private Integer id;
 	
+	@Column(unique = true)
 	private String username;
 	private String password;
+	
+	@Column(unique = true)
 	private String email;
+	
+	@Column(unique = true)
 	private long mobileNumber;
 	
 	@Enumerated(value= EnumType.STRING)

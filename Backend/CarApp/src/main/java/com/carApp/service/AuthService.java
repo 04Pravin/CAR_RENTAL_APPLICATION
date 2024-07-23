@@ -2,6 +2,7 @@ package com.carApp.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -42,13 +43,26 @@ public class AuthService {
     private Map<String, String> otpData = new HashMap<>();
 
 	
-	public AuthenticationResponse register(User request) {
+	public AuthenticationResponse register(User request) throws Exception {
 		User user = new User();
 		user.setUsername(request.getUsername());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		user.setEmail(request.getEmail());
 		user.setMobileNumber(request.getMobileNumber());
 		user.setRole(request.getRole());
+		
+		Optional<User> userByUsername = userRepo.findByUsername(request.getUsername());
+		Optional<User> userByEmail = userRepo.findByUsername(request.getUsername());
+		Optional<User> userByMobileNumber = userRepo.findByUsername(request.getUsername());
+		
+		if(userByUsername.isPresent())
+			throw new Exception("Username already exists");
+		
+		if(userByEmail.isPresent())
+			throw new Exception("Email already exists");
+		
+		if(userByMobileNumber.isPresent())
+			throw new Exception("Mobile number already exists");
 		
 		userRepo.save(user);
 		
@@ -93,12 +107,13 @@ public class AuthService {
 		otpData.put(email, otp);
 //		return otp;
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom("yourmail@gmail.com");
+		message.setFrom("pravinkumareee1404@gmail.com");
 		message.setTo(email);
 		message.setSubject("CAR RENTAL - OTP");
 		message.setText("Your OTP code : "+ otp);
 		logger.info("Sending mail");
 		mailSender.send(message);
+		otpData.put(email, otp);
 		logger.info("Mail sent");
 	}
 	

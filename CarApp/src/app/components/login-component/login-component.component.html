@@ -1,3 +1,5 @@
+<mat-progress-bar *ngIf="progress || gettingUserProgress || verificationProgress" mode="indeterminate"></mat-progress-bar>
+
 <div class="login-container">
     <mat-card class="login-card">
         <div class="login-content">
@@ -46,20 +48,31 @@
                     </mat-card-actions>
                 </form>
                 
-                <form *ngIf="forgotPassword && !confirmReset" [formGroup]="resetPasswordForm" (ngSubmit)="next()">
+                <form *ngIf="forgotPassword && !confirmReset" [formGroup]="resetPasswordForm" >
                 
                     <div class="field">
-                        <mat-form-field appearance="outline">
+                        <mat-form-field appearance="outline" *ngIf="!verifyOtp">
                             <mat-label>Enter your registered username</mat-label>
                             <input formControlName="username" matInput type="text" matInput required>
                             <mat-icon matSuffix>person</mat-icon>
                         </mat-form-field>
                         
-                        <mat-form-field appearance="outline">
+                        <mat-form-field appearance="outline" *ngIf="!verifyOtp">
                             <mat-label>Enter your registered mail</mat-label>
                             <input matInput formControlName="email" type="text" required>
                             <mat-icon matSuffix>mail</mat-icon>
-                        </mat-form-field>                                                           
+                        </mat-form-field>
+
+                        <button mat-raised-button color="primary" [disabled]="resetPasswordForm.invalid" (click)="sendOtp()" *ngIf="!verifyOtp && !verified">Get otp</button>
+                        
+                        
+
+                        <mat-form-field appearance="outline" *ngIf="verifyOtp">
+                            <mat-label>Enter the otp</mat-label>
+                            <input matInput formControlName="otp" type="text" required>
+                        </mat-form-field>
+
+                        <button mat-raised-button color="primary" (click)="verify()" *ngIf="verifyOtp">Verify otp</button>                                                      
                     </div>
                     <mat-card-actions class="reset-card-actions">
                         <div class="reset-button">
@@ -70,7 +83,7 @@
                             </button>
                         </div>
                         <div>
-                            <button mat-raised-button type="submit" [disabled]="resetPasswordForm.invalid" color="primary">
+                            <button mat-raised-button (click)="next()" [disabled]="!verified" color="primary">
                                 Next
                                 <mat-icon matSuffix style="margin-right: 4px;">arrow_forward_ios</mat-icon>
                             </button>

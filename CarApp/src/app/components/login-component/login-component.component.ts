@@ -26,8 +26,15 @@ export class LoginComponentComponent {
   updatePasswordForm!:FormGroup;
   id:number|null = null;
   showPassword!:boolean;
+  verifyOtp!:boolean;
+  enterOtp!:boolean;
+  verified!:boolean;
+  progress!:boolean;
+  verificationProgress!:boolean;
+  gettingUserProgress!:boolean;
+  
 
-  constructor(private _snackBar:MatSnackBar, private _fb:FormBuilder, private _router:Router, private _authService:AuthServiceService, public dialogRef:MatDialog ){
+  constructor(private _snackBar:MatSnackBar, private _fb:FormBuilder, private _router:Router, private _authService:AuthServiceService, public dialogRef:MatDialog){
     this.loginForm = this._fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -35,7 +42,8 @@ export class LoginComponentComponent {
 
     this.resetPasswordForm = this._fb.group({
       username: ['', Validators.required],
-      email: ['', Validators.required]
+      email: ['', Validators.required],
+      otp: ['']
     });
 
     this.updatePasswordForm = this._fb.group({
@@ -73,6 +81,9 @@ export class LoginComponentComponent {
           console.error('Error while logging in:', err);
           this.isLogin = false;
           this._snackBar.open('Error while logging in', 'close', {duration: 5*1000});
+        },
+        complete: () =>{
+          this.isLogin = false;
         }
       });
     } else {
@@ -96,7 +107,40 @@ export class LoginComponentComponent {
     this.forgotPassword = true;
   }
 
+  sendOtp(){
+    this.progress = true;
+    const {username, email} = this.resetPasswordForm.value;
+    this._authService.sendOtp(email).subscribe({
+      next: () => console.log('Sending otp'),
+      error: () => console.log('Otp not sent'),
+      complete: () => {
+        console.log('Otp sent successfully');
+        this._snackBar.open('Otp sent','close', {duration: 5*1000});
+        this.verifyOtp = true;
+        this.progress = false;
+      }
+    });
+  }
+
+  verify(){
+    this.verificationProgress = true;
+    const {email, otp} = this.resetPasswordForm.value;
+    this._authService.verifyOtp(email, otp).subscribe({
+      next: () => console.log('Verifying otp'),
+      error: () => console.log('Failed to verify'),
+      complete: () => {
+        console.log('Verified successfully');
+        this.verified = true;
+        this.next();
+        this.verifyOtp = false;
+        this.enterOtp = true;
+        this.verificationProgress = false;
+      }
+    });
+  }
+
   next(){
+    this.gettingUserProgress = true;
     if(this.resetPasswordForm.valid){
       this.confirmReset = true;
       const {username, email} = this.resetPasswordForm.value;
@@ -112,10 +156,14 @@ export class LoginComponentComponent {
           this.forgotPassword = false;
           this.confirmReset = false;
         },
-        complete: () => console.log("Successfully got details") 
+        complete: () =>{ 
+          console.log("Successfully got details");
+          this.gettingUserProgress = false;
+        }
       });
     }
   }
+
 
   back(){
     this.forgotPassword = false;
@@ -148,4 +196,3 @@ export class LoginComponentComponent {
   }
   
 }
-

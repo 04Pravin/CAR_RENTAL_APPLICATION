@@ -1,3 +1,6 @@
+<mat-progress-bar *ngIf="veriyingOtpProgress || gettingOtpProgress" mode="indeterminate"></mat-progress-bar>
+
+
 <div class="register-form-container">
     <h1 mat-dialog-title>
         New User Registration
@@ -49,14 +52,33 @@
                             <mat-option value="role">USER</mat-option>
                         </mat-select>
                         <mat-icon matSuffix>work</mat-icon>
+                        
                 </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="getOtp()" *ngIf="!isOtpSent" [disabled]="registrationForm.invalid">Get otp</button>
+
             </div>
             
         </form>
 
+        <form [formGroup]="otpForm" *ngIf="isOtpSent && !isOtpVerified">
+            <div class="field-container">
+                <mat-form-field appearance="outline" *ngIf="isOtpSent">
+                    <mat-label>Enter the otp</mat-label>
+                    <input formControlName="otp" matInput type="text" required>
+                    <mat-icon matSuffix>mail</mat-icon>
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="verifyOtp()" [disabled]="otpForm.invalid">Verify otp</button>
+            </div>
+        </form>
+
+        <div *ngIf="isOtpVerified" class="verification-message">
+            <mat-icon color="primary">check_circle</mat-icon> Email Verified
+          </div>
+
         <mat-dialog-actions align="end">
             <button mat-raised-button (click)="cancel()" color="warn">Cancel</button>
-            <button mat-raised-button (click)="register(registrationForm)" color="primary" [disabled]="registrationForm.invalid">Register</button>
+            <button mat-raised-button (click)="register(registrationForm)" color="primary" [disabled]="!isOtpVerified">Register</button>
         </mat-dialog-actions>
     </mat-dialog-content>
 </div>
