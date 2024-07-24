@@ -72,7 +72,8 @@
                             <input matInput formControlName="otp" type="text" required>
                         </mat-form-field>
 
-                        <button mat-raised-button color="primary" (click)="verify()" *ngIf="verifyOtp">Verify otp</button>                                                      
+                        <p *ngIf="otpExpiryTime">Time remaining: {{ remainingTime | number:'1.0-0' }} seconds</p>
+                        <button mat-raised-button color="primary" (click)="verify()" *ngIf="verifyOtp || remainingTime <= 0">Verify otp</button>                                                      
                     </div>
                     <mat-card-actions class="reset-card-actions">
                         <div class="reset-button">

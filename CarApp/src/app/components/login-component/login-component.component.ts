@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./login-component.component.css']
 })
 
-export class LoginComponentComponent {
+export class LoginComponentComponent implements OnDestroy{
   hide = true;
   loginForm:FormGroup;
   isLogin!:boolean;
@@ -32,9 +32,11 @@ export class LoginComponentComponent {
   progress!:boolean;
   verificationProgress!:boolean;
   gettingUserProgress!:boolean;
+  otpExpiryTime!: number;
+  timerInterval!: any;
   
 
-  constructor(private _snackBar:MatSnackBar, private _fb:FormBuilder, private _router:Router, private _authService:AuthServiceService, public dialogRef:MatDialog){
+  constructor(private _cdRef: ChangeDetectorRef, private _snackBar:MatSnackBar, private _fb:FormBuilder, private _router:Router, private _authService:AuthServiceService, public dialogRef:MatDialog){
     this.loginForm = this._fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -56,6 +58,7 @@ export class LoginComponentComponent {
       this.showPassword = value;
     });
   }
+ 
   
   login(): void {
     if (this.loginForm.valid) {
@@ -108,19 +111,42 @@ export class LoginComponentComponent {
   }
 
   sendOtp(){
-    this.progress = true;
-    const {username, email} = this.resetPasswordForm.value;
-    this._authService.sendOtp(email).subscribe({
-      next: () => console.log('Sending otp'),
-      error: () => console.log('Otp not sent'),
-      complete: () => {
-        console.log('Otp sent successfully');
-        this._snackBar.open('Otp sent','close', {duration: 5*1000});
-        this.verifyOtp = true;
-        this.progress = false;
-      }
-    });
+    this.otpExpiryTime = Date.now() + 2 * 60 * 1000; 
+    this.startTimer();
+    
+    // this.progress = true;
+    // const {username, email} = this.resetPasswordForm.value;
+    // this._authService.sendOtp(email).subscribe({
+    //   next: () => console.log('Sending otp'),
+    //   error: () => console.log('Otp not sent'),
+    //   complete: () => {
+    //     console.log('Otp sent successfully');
+    //     this._snackBar.open('Otp sent','close', {duration: 5*1000});
+    //     this.verifyOtp = true;
+    //     this.progress = false;
+    //     this.otpExpiryTime = Date.now() + 2 * 60 * 1000; 
+    //     this.startTimer();
+    //   }
+    // });
   }
+
+  startTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+
+    this.timerInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeLeft = Math.max(this.otpExpiryTime - currentTime, 0);
+      if (timeLeft <= 0) {
+        clearInterval(this.timerInterval);
+      //   this.otpSent = false;
+      }
+      // Mark the component for change detection
+      this._cdRef.detectChanges();
+    }, 1000);
+  }
+
 
   verify(){
     this.verificationProgress = true;
@@ -193,6 +219,16 @@ export class LoginComponentComponent {
           });
         }
     }
+  }
+
+  ngOnDestroy() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+  }
+
+  get remainingTime(): number {
+    return Math.max((this.otpExpiryTime - Date.now()) / 1000, 0);
   }
   
 }

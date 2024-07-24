@@ -31,7 +31,7 @@ public class AuthController {
 	private static final Logger logger = LoggerFactory.getLogger(Car.class);
 	
 	@PostMapping("register")
-	public ResponseEntity<AuthenticationResponse> register(@RequestBody User user){
+	public ResponseEntity<AuthenticationResponse> register(@RequestBody User user) throws Exception{
 		return ResponseEntity.ok(authService.register(user));
 	}
 	
